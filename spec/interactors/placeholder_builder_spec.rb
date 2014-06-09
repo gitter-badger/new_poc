@@ -10,27 +10,22 @@ module DSO
     let(:klass) { PlaceholderBuilder }
     let(:blog) { Blog.new }
 
-    # before :each do
-    #   @blog = Blog.new
-    # end
-
     describe 'can be executed by passing in the blog as a parameter' do
 
       it 'reporting a successful outcome' do
-        expect(klass.run! blog: blog).to be true
+        expect(klass.run blog: blog).to be_valid
       end
     end # describe 'can be executed by passing in the blog as a parameter'
 
     it 'adds two posts to the Blog' do
       expect(blog).to have(0).entries
-      klass.run! blog: blog
-      expect(blog).to have(2).entries
+      expect(klass.run! blog: blog).to have(2).entries
     end
 
     describe 'updates the state of the Blog instance, so that it' do
 
       before :each do
-        klass.run! blog: blog
+        @blog2 = klass.run! blog: blog
       end
 
       after :each do |example|
@@ -39,7 +34,7 @@ module DSO
       end
 
       describe 'has a first post that has the expected' do
-        let(:post) { blog.entries.first }
+        let(:post) { @blog2.entries.first }
 
         it :title do
           @expected = 'Paint just applied'
@@ -51,7 +46,7 @@ module DSO
       end # describe 'has a first post that has the expected'
 
       describe 'has a second post that has the expected' do
-        let(:post) { blog.entries.second }
+        let(:post) { @blog2.entries.second }
 
         it :title do
           @expected = 'Still wet'
