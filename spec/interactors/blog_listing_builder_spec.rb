@@ -24,19 +24,18 @@ module DSO
     let(:blog) { setup_blog }
 
     it 'can be called using a `blog` parameter' do
-      blog_obj = Blog.new
-      expect { klass.run! blog: blog_obj }.to_not raise_error
+      expect { klass.setup_responders.run! blog: Blog.new }.to_not raise_error
     end
 
     it 'raises an error when no parameter is passed' do
       error = ActiveInteraction::InvalidInteractionError
       message = 'Blog is required'
-      expect { klass.run! }.to raise_error error, message
+      expect { klass.setup_responders.run! }.to raise_error error, message
     end
 
     describe 'copies values from the Blog instance for the' do
 
-      subject(:obj) { klass.run! blog: blog }
+      subject(:obj) { klass.setup_responders.run! blog: blog }
 
       it 'title' do
         expect(obj.title).to eq blog.title
@@ -56,7 +55,7 @@ module DSO
     end # describe 'copies values from the Blog instance for the'
 
     it 'prohibits modification of attributes on returned object' do
-      obj = klass.run! blog: setup_blog
+      obj = klass.setup_responders.run! blog: setup_blog
       expect { obj.title = 'anything' }.to \
           raise_error NoMethodError, /undefined method `title='.+/
       expect { obj.subtitle = 'anything' }.to \
@@ -76,6 +75,30 @@ module DSO
       new_entry = BlogListingBuilder::Builder::Entry.new dummy_params
       expect { obj.entries << new_entry }.to \
           raise_error RuntimeError, /can't modify frozen Array/
+    end
+
+    it 'sets up responders properly' do
+      # Dummy listener class for spec.
+      class ExampleListener
+        attr_reader :obj
+        def foo(obj)
+          @obj = deep_magick obj
+        end
+
+        private
+
+        def deep_magick(_obj)
+          # ...
+        end
+      end
+
+      klass.setup_responders [ExampleListener]
+      expect(Wisper::GlobalListeners.listeners.first).to be_an ExampleListener
+      allowed_classes = Wisper::GlobalListeners
+          .registrations
+          .first
+          .allowed_classes
+      expect(allowed_classes.first).to eq klass.name
     end
   end # describe BlogListingBuilder
 end # module DSO

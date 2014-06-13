@@ -1,10 +1,10 @@
 GIT
   remote: git://github.com/bbatsov/rubocop.git
-  revision: 56a5a7741db8d51006155ba5ed05b6680afac2ea
+  revision: cfc2a31741b0f32d03907d8d9b5169290f7b8f29
   specs:
     rubocop (0.23.0)
       json (>= 1.7.7, < 2)
-      parser (~> 2.1.9)
+      parser (>= 2.2.0.pre.1, < 3.0)
       powerpack (~> 0.0.6)
       rainbow (>= 1.99.1, < 3.0)
       ruby-progressbar (~> 1.4)
@@ -20,8 +20,14 @@ GIT
       request_store (~> 1.0.3)
 
 GIT
+  remote: git://github.com/krisleech/wisper.git
+  revision: fb1b3e91c17f8dcfe62ec97bc65c36e4dd4a1ea4
+  specs:
+    wisper (1.3.0)
+
+GIT
   remote: git://github.com/orgsync/active_interaction.git
-  revision: 6d11f3ef0f5e743d2babdcf507cb20afe016c6dd
+  revision: 040d1f342d572cbb4ce8b4556bb7478bf6814dd0
   branch: v1.3.0
   specs:
     active_interaction (1.2.3)
@@ -129,7 +135,7 @@ GEM
     debugger-ruby_core_source (1.3.5)
     diff-lcs (1.2.5)
     diffy (3.0.4)
-    docile (1.1.3)
+    docile (1.1.4)
     erubis (2.7.0)
     eventmachine (1.0.3)
     execjs (2.2.0)
@@ -206,7 +212,7 @@ GEM
     nokogiri (1.6.2.1)
       mini_portile (= 0.6.0)
     parallel (1.0.0)
-    parser (2.1.9)
+    parser (2.2.0.pre.1)
       ast (>= 1.1, < 3.0)
       slop (~> 3.4, >= 3.4.5)
     polyglot (0.3.5)
@@ -321,7 +327,7 @@ GEM
       ruby2ruby (~> 2.0.8)
       ruby_parser (~> 3.3)
       sexp_processor
-    request_store (1.0.5)
+    request_store (1.0.6)
     require_all (1.3.2)
     rest-client (1.6.7)
       mime-types (>= 1.16)
@@ -341,7 +347,7 @@ GEM
       rspec (~> 2, >= 2.11.0)
     rspec-http (0.10.0)
       rspec (~> 2.0)
-    rspec-mocks (2.99.0)
+    rspec-mocks (2.99.1)
     rspec-rails (2.99.0)
       actionpack (>= 3.0)
       activemodel (>= 3.0)
@@ -476,4 +482,5 @@ DEPENDENCIES
   teaspoon
   thin
   uglifier (>= 1.3.0)
+  wisper!
   yajl-ruby

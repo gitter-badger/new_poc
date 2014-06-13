@@ -1,8 +1,12 @@
 
+require_relative 'responder_setup'
+
 module DSO
   # Build list of information about a blog for presentation: title, subtitle,
   # entry data.
   class BlogListingBuilder < ActiveInteraction::Base
+    include Wisper::Publisher
+    extend ResponderSetup
     interface :blog, methods: [:title, :subtitle, :entries]
 
     # Eventually, this is where we'd sort and filter posts being presented to

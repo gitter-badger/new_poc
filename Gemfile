@@ -21,6 +21,7 @@ gem 'slim-rails'
 gem 'sqlite3'
 gem 'thin'
 gem 'uglifier', '>= 1.3.0'
+gem 'wisper', github: 'krisleech/wisper'
 gem 'yajl-ruby'
 
 group :doc do
