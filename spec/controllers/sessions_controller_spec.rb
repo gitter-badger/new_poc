@@ -55,6 +55,49 @@ describe SessionsController do
     it { expect(session_path(1)).to eq '/sessions/1' }
   end
 
+  describe "GET 'new'" do
+
+    # context 'for a Registered User' do
+    #   before :each do
+    #     @user = FactoryGirl.create :user_datum
+    #     session[:user_id] = @user.id
+    #     get :new
+    #   end
+    #
+    #   after :each do
+    #     session[:user_id] = nil
+    #     @user.destroy
+    #   end
+    #
+    #   it 'returns http success' do
+    #     expect(response).to be_success
+    #   end
+    #
+    #   it 'assigns a new PostData instance to :post' do
+    #     post = assigns[:post]
+    #     expect(post).to be_a PostData
+    #     expect(post).to be_a_new_record
+    #   end
+    #
+    #   it 'renders the :new template' do
+    #     expect(response).to render_template :new
+    #   end
+    # end # context 'for a Registered User'
+
+    context 'for the Guest User' do
+      before :each do
+        session[:user_id] = nil
+        get :new
+      end
+
+      it 'redirects to the landing page' do
+        response
+        expect(response).to be_redirection
+        expect(response).to redirect_to root_path
+      end
+    end # context 'for the Guest User'
+  end # describe "GET 'new'"
+
   describe "POST 'create'" do
 
     describe 'with valid params' do

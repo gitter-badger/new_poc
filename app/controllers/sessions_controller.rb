@@ -9,6 +9,7 @@ module DSO
   # doesn't seem to. Figuring out *why* is the current challenge.
   class ActiveSessionUserAuthoriser < ActiveInteraction::Base
     interface :current_user
+    interface :session_datum
     string :action
     include Pundit
 
@@ -16,16 +17,19 @@ module DSO
     # below, then review the code accompanying PR 136 for Pundit; see
     # https://github.com/billychan/pundit/commit/2c2f9a1 -- what am I missing?
     def execute
+      ap "Entering #execute: session_datum has ID #{session_datum.object_id}"
       active_user = policied_user
-      session_datum = SessionData.new id: 0
+      # session_datum = SessionData.new id: 0
       update_active_policy active_user, session_datum
-      # HACK: Calling PunditAuthorizer.new directly gives an error
+      ap "After #update_active_policy, session_datum has ID #{session_datum.object_id}"
+      # HACK: Calling `PunditAuthorizer.new` directly gives an error
       #       'DSO::ActiveSessionUserAuthoriser::PunditAuthorizer not found'
       #       Why? Calling it from the debugger Just Works here.
       # binding.pry
       auth_class = self.class.parent.parent::PunditAuthorizer
       authorizer = auth_class.new active_user, session_datum
       authorizer.authorize_on action
+      ap "After authorize_on, session_datum has ID #{session_datum.object_id}"
       session_datum
     end
 
@@ -38,6 +42,7 @@ module DSO
           SessionDataPolicy
         end
       end
+      binding.pry
       user
     end
 
@@ -54,12 +59,15 @@ end # module DSO
 # SessionsController: actions related to Sessions (logging in and out)
 class SessionsController < ApplicationController
   def new
-    authorise_current_user
-    # @session = DSO::ActiveSessionUserAuthoriser
-    #     .run! current_user: current_user,
-    #           action: 'new'
-    # binding.pry
-    # @session
+    # authorise_current_user
+    session_datum = SessionData.new id: 0
+    ap "Third line of #new: object ID is #{session_datum.object_id}"
+    @session = DSO::ActiveSessionUserAuthoriser
+        .run! current_user: current_user,
+              session_datum: session_datum,
+              action: 'new'
+    ap "returning from #new, @session ID is #{@session.object_id}"
+    @session
   end
 
   def create
