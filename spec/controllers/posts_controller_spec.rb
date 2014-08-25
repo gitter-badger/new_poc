@@ -29,7 +29,6 @@ describe PostsController do
   describe :routing.to_s, type: :routing do
     it { expect(get new_post_path).to route_to 'posts#new' }
     it { expect(post posts_path).to route_to 'posts#create' }
-    it { expect(get posts_path).to_not be_routable }
     it do
       expect(get post_path('the-title'))
           .to route_to controller: 'posts', action: 'show', id: 'the-title'
@@ -37,15 +36,22 @@ describe PostsController do
     # Can't disable ID-based routing but enable slug-based. This has to be
     # restricted at the controller/DSO level.
     # it { expect(get '/posts/:id').to_not be_routable }
-    it { expect(get '/posts/:id/edit').to_not be_routable }
-    it { expect(put post_path(1)).to_not be_routable }
     it { expect(delete post_path(1)).to_not be_routable }
+    it do
+      expect(get '/posts/some-title/edit')
+          .to route_to 'posts#edit', id: 'some-title'
+    end
+    it do
+      expect(put '/posts/some-title')
+          .to route_to 'posts#update', id: 'some-title'
+    end
   end
 
   describe :helpers.to_s do
     it { expect(new_post_path).to eq '/posts/new' }
     it { expect(posts_path).to eq '/posts' }
     it { expect(post_path(42)).to eq '/posts/42' }
+    it { expect(edit_post_path('some-title')).to eq '/posts/some-title/edit' }
   end
 
   describe "GET 'new'" do
