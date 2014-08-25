@@ -194,6 +194,7 @@ GEM
       fattr (>= 2.2.0)
       map (>= 5.1.0)
     map (6.5.4)
+    markdown-toolbar (0.2.4)
     meta_request (0.3.4)
       callsite (~> 0.0, >= 0.0.11)
       rack-contrib (~> 1.1)
@@ -259,7 +260,7 @@ GEM
       diffy
       grit
       pry (>= 0.9.8)
-    pry-highlight (0.0.1)
+    pry-highlight (0.1.0)
       coderay
       json
       nokogiri
@@ -306,7 +307,7 @@ GEM
       sprockets-rails (~> 2.0)
     rails-assets-bootstrap (3.2.0)
       rails-assets-jquery (>= 1.9.0)
-    rails-assets-bootswatch (3.2.0.2)
+    rails-assets-bootswatch (3.2.0.3)
       rails-assets-bootstrap (~> 3.2.0)
     rails-assets-jquery (2.1.1)
     rails-assets-sugar (1.4.2)
@@ -485,6 +486,8 @@ GEM
       polyglot (>= 0.3.1)
       polyglot (>= 0.3.1)
       polyglot (>= 0.3.1)
+      polyglot (>= 0.3.1)
+      polyglot (>= 0.3.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.5.3)
@@ -523,6 +526,7 @@ DEPENDENCIES
   htmlentities
   jbuilder (~> 2.0)
   jquery-rails
+  markdown-toolbar
   meta_request
   metric_fu
   naught

@@ -286,5 +286,4 @@ describe PostsController do
       end # context 'attempting to edit an article authored by another user'
     end # context 'for a logged-in user'
   end # describe "GET 'edit'"
-
 end # describe PostsController

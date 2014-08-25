@@ -12,5 +12,6 @@
  *
  *= require_tree .
  *= used_to require bootstrap # see application.html.slim for bootswatch
+ *= require markdown-toolbar
  *= require_self
  */

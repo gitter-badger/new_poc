@@ -19,6 +19,6 @@
 coverage
 doc/
 tmp/
-vendor/cache
-vendor/ruby
+vendor/cache/
+vendor/ruby/
 o-rdoc/

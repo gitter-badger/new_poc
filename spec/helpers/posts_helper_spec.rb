@@ -1,9 +1,12 @@
 
 require 'spec_helper'
 
-describe PostsHelper do
-  describe :new_post_form_attributes.to_s do
-    subject(:attribs) { helper.new_post_form_attributes }
+shared_examples 'post form-attributes helper' do |form_name|
+  describe "#{form_name}_form_attributes" do
+    subject do
+      message = "#{form_name}_form_attributes"
+      helper.send message
+    end
 
     it 'returns a Hash' do
       expect(subject).to be_a Hash
@@ -26,13 +29,13 @@ describe PostsHelper do
 
     describe 'has an :html sub-hash that contains the correct values for' do
       it 'the :id key' do
-        expect(subject[:html][:id]).to eq 'new_post'
+        expect(subject[:html][:id]).to eq form_name
       end
 
       it 'the :class key' do
         classes = subject[:html][:class].split(/\s+/)
         expect(classes).to include 'form-horizontal'
-        expect(classes).to include 'new_post'
+        expect(classes).to include form_name
       end
     end # describe 'has an :html sub-hash that contains the correct values for'
 
@@ -44,5 +47,11 @@ describe PostsHelper do
       expected = helper.posts_path
       expect(subject[:url]).to eq expected
     end
-  end # describe :new_post_form_attributes
+  end # describe "#{form_name}_form_attributes"
+end
+
+describe PostsHelper do
+  it_behaves_like 'post form-attributes helper', 'new_post'
+
+  it_behaves_like 'post form-attributes helper', 'edit_post'
 end # describe PostsHelper
