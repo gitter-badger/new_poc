@@ -23,6 +23,11 @@ class PostsController < ApplicationController
     process_create_result
   end
 
+  def edit
+    @post = PostData.find params[:id]
+    authorize @post
+  end
+
   def show
     post = PostData.find params[:id]
     @post = PostDataDecorator.new(post)

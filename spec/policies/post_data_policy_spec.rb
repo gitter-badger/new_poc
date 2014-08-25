@@ -5,7 +5,8 @@ describe PostDataPolicy do
   subject { PostDataPolicy }
   let(:guest_user) { UserData.first }
   let(:registered_user) { FactoryGirl.build :user_datum }
-  let(:instance) { SessionData.new }
+  let(:author) { FactoryGirl.build :user_datum }
+  let(:instance) { FactoryGirl.create :post_datum, author_name: author.name }
 
   permissions :create? do
 
@@ -17,4 +18,21 @@ describe PostDataPolicy do
       expect(subject).to permit(registered_user, instance)
     end
   end # permissions :create?
+
+  permissions :edit? do
+    describe 'prohibits invoking the :edit action by' do
+
+      it 'the Guest User' do
+        expect(subject).not_to permit(guest_user, instance)
+      end
+
+      it 'a Registered User other than the author' do
+        expect(subject).not_to permit(registered_user, instance)
+      end
+    end # describe 'prohibits invoking the :edit action by'
+
+    it 'permits the post author to invoke the :edit action' do
+      expect(subject).to permit(author, instance)
+    end
+  end # permissions :edit?
 end # describe PostDataPolicy

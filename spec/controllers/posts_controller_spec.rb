@@ -26,6 +26,8 @@ end # shared_examples 'an attempt to create an invalid Post'
 
 # Posts controller dispatches post-specific actions
 describe PostsController do
+  let(:not_auth_message) { 'You are not authorized to perform this action.' }
+
   describe :routing.to_s, type: :routing do
     it { expect(get new_post_path).to route_to 'posts#new' }
     it { expect(post posts_path).to route_to 'posts#create' }
@@ -99,8 +101,7 @@ describe PostsController do
       end
 
       it 'renders the correct flash error message' do
-        expected = 'You are not authorized to perform this action.'
-        expect(flash[:error]).to eq expected
+        expect(flash[:error]).to eq not_auth_message
       end
     end # context 'for the Guest User'
   end # describe "GET 'new'"
@@ -164,8 +165,7 @@ describe PostsController do
         end
 
         it 'renders the correct flash error message' do
-          expected = 'You are not authorized to perform this action.'
-          expect(flash[:error]).to eq expected
+          expect(flash[:error]).to eq not_auth_message
         end
       end # describe 'with valid parameters'
 
@@ -225,4 +225,66 @@ describe PostsController do
       end
     end # context 'for an invalid post'
   end # describe "GET 'show'"
+
+  describe "GET 'edit'" do
+
+    context 'for the Guest User' do
+      let(:post) { FactoryGirl.create :post_datum }
+
+      before :each do
+        get :edit, id: post.title.parameterize
+      end
+
+      it 'displays the authorisation-failure flash message' do
+        expect(request.flash[:error]).to eq not_auth_message
+      end
+
+      it 'redirects to the root path' do
+        expect(response).to redirect_to root_path
+      end
+    end # context 'for the Guest User'
+
+    context 'for a logged-in user' do
+      let(:author) { FactoryGirl.create :user_datum }
+      let(:post) { FactoryGirl.create :post_datum, author_name: author.name }
+      before :each do
+        session[:user_id] = author.name.parameterize
+      end
+
+      context 'editing his own article' do
+        before :each do
+          get :edit, id: post.title.parameterize
+        end
+
+        it 'returns a status of HTTP ok' do
+          expect(response).to be_ok
+        end
+
+        it 'renders edit-post template' do
+          expect(response).to render_template :edit
+        end
+
+        it 'assigns the :post instance to the requested instance' do
+          expect(assigns[:post]).to eq post
+        end
+      end # context 'editing his own article'
+
+      context 'attempting to edit an article authored by another user' do
+        let(:user) { FactoryGirl.create :user_datum }
+        before :each do
+          session[:user_id] = user.name.parameterize
+          get :edit, id: post.title.parameterize
+        end
+
+        it 'displays the authorisation-failure flash message' do
+          expect(request.flash[:error]).to eq not_auth_message
+        end
+
+        it 'redirects to the root path' do
+          expect(response).to redirect_to root_path
+        end
+      end # context 'attempting to edit an article authored by another user'
+    end # context 'for a logged-in user'
+  end # describe "GET 'edit'"
+
 end # describe PostsController
