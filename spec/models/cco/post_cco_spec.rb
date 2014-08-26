@@ -56,6 +56,30 @@ module CCO
           end
         end # describe 'pubdate'
       end # describe 'returns a PostData instance with correct values for'
+
+      context 'when called on an existing model record' do
+        let(:new_body) { 'THIS IS THE NEW BODY' }
+        let(:impl) do
+          ret = PostData.new post_attribs
+          ret.save!
+          ret
+        end
+        let(:entity) { klass.to_entity impl }
+
+        it 'updates the existing record' do
+          entity.body = new_body
+          impl2 = klass.from_entity entity
+          expect(impl2).not_to be_new_record
+          expect(impl2.body).to eq new_body
+        end
+
+        # Remember that #changed_attributes is cleared on a saved record.
+        it 'changes only the modified attribute' do
+          entity.body = new_body
+          impl2 = klass.from_entity entity
+          expect(impl2.changed_attributes.keys).to eq ['body']
+        end
+      end # context 'when called on an existing model record'
     end # describe :from_entity
 
     describe :to_entity do
