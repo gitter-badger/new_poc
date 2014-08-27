@@ -1,12 +1,16 @@
 
 # Old-style junk drawer of view-helper functions, etc.
 module PostsHelper
-  def new_post_form_attributes
-    shared_post_form_attributes 'new_post'
+  def new_post_form_attributes(_params = {})
+    attribs = shared_post_form_attributes 'new_post'
+    attribs[:url] = posts_path
+    attribs
   end
 
-  def edit_post_form_attributes
-    shared_post_form_attributes 'edit_post'
+  def edit_post_form_attributes(post)
+    attribs = shared_post_form_attributes 'edit_post'
+    attribs[:url] = post_path(post)
+    attribs
   end
 
   private
@@ -17,8 +21,7 @@ module PostsHelper
         class:  ['form-horizontal', which].join(' '),
         id:     which
       },
-      role:     'form',
-      url:      posts_path
+      role:     'form'
     }
   end
 end
