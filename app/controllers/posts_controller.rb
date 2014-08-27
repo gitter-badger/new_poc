@@ -34,6 +34,20 @@ class PostsController < ApplicationController
     authorize @post
   end
 
+  # def update
+  #   @post = PostData.find params[:id]
+  #   authorize @post
+  #   entity = CCO::PostCCO.to_entity @post
+  #   result = DSO::PostUpdater.run user: current_user,
+  #                                 post: @post,
+  #                                 post_data: params[:post_data]
+  #   if result.valid?
+  #     update_and_redirect_with result.result
+  #   else
+  #     render 'edit'
+  #   end
+  # end
+
   private
 
   def article_not_found
@@ -64,4 +78,10 @@ class PostsController < ApplicationController
     params[:post_data][:author_name] = user.name if user.registered?
     params
   end
+
+  # def update_and_redirect_with(attribs)
+  #   @post.update_attributes attribs
+  #   message = "You successfully updated your post, '#{@post.title}'"
+  #   redirect_to post_path(@post.slug), flash: { success: message }
+  # end
 end # class Blog::PostsController

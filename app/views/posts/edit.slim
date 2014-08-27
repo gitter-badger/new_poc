@@ -1,7 +1,7 @@
 
 h1 Edit and Update Post
 
-= form_for(@post, edit_post_form_attributes ) do |f|
+= form_for(@post, edit_post_form_attributes(@post)) do |f|
   == explain_errors @post
   legend Edit Your Existing Post
 
