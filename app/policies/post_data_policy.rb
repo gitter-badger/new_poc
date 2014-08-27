@@ -9,4 +9,8 @@ class PostDataPolicy < ApplicationPolicy
   def edit?
     record.author_name == user.name
   end
+
+  def update?
+    edit?
+  end
 end # class PostDataPolicy

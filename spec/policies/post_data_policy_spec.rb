@@ -35,4 +35,21 @@ describe PostDataPolicy do
       expect(subject).to permit(author, instance)
     end
   end # permissions :edit?
+
+  permissions :update? do
+    describe 'prohibits invoking the :update action by' do
+
+      it 'the Guest User' do
+        expect(subject).not_to permit(guest_user, instance)
+      end
+
+      it 'a Registered User other than the author' do
+        expect(subject).not_to permit(registered_user, instance)
+      end
+    end # describe 'prohibits invoking the :update action by'
+
+    it 'permits the post author to invoke the :update action' do
+      expect(subject).to permit(author, instance)
+    end
+  end # permissions :update?
 end # describe PostDataPolicy
