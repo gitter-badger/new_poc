@@ -2,6 +2,7 @@
 # Everything other entities or DSOs need to know about a user should be in here.
 class User
   attr_reader :name, :email, :profile, :slug
+  attr_writer :session_token
 
   def initialize(attrs = {})
     ivars = [:name, :email, :profile, :session_token, :slug]

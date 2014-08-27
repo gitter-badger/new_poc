@@ -17,7 +17,7 @@ module CCO
         expect(from.receiver).to be BlogCCO
       end
 
-      it 'takes two parameters' do
+      it 'takes a maximum of two parameters' do
         expect(from.arity.abs).to eq 2
       end
 
@@ -60,9 +60,8 @@ module CCO
         let(:post_count) { 5 }
         let(:entity) do
           e = Blog.new
-          # You learn something new every day. There *is* a FactoryGirl method
-          # named #attributes_for_list.
-          FactoryGirl.attributes_for_list(:post_datum, post_count).each do |p|
+          # Why #create_list rather than #attributes_for_list as before? Slugs.
+          FactoryGirl.create_list(:post_datum, post_count).each do |p|
             e.add_entry p
           end
           e
@@ -75,7 +74,7 @@ module CCO
         it 'with the lambda called once with each Post entity' do
           the_posts = []
           callback = -> (post) { the_posts << post }
-          from.call entity, callback
+          from.call entity, post_callback: callback
           expect(the_posts).to have(post_count).entries
           the_posts.each { |post| expect(post).to be_a PostData }
         end
@@ -89,9 +88,16 @@ module CCO
         expect(to.receiver).to be BlogCCO
       end
 
+      it 'takes a maximum of two parameters' do
+        expect(to.arity.abs).to be 2
+      end
+
       it 'takes one required parameter' do
-        expect(to.arity).to be 1
         expect(to.parameters.first[0]).to be :req
+      end
+
+      it 'takes a second optional parameter' do
+        expect(to.parameters.last[0]).to be :opt
       end
 
       it 'returns a Blog instance when called with a BlogData parameter' do

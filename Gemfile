@@ -42,7 +42,20 @@ group :development do
   gem 'bullet'
   gem 'meta_request'
   gem 'metric_fu'
-  gem 'pry-full'
+  # 'rking/pry-full' hasn't been maintained since Feb 2013; breaks Ruby 2.1.
+  # Its individual *components* are mostly fixed, so...
+  # gem 'pry-full'
+  gem 'pry'
+  gem 'pry-theme'
+  gem 'pry-pretty-numeric'
+  # gem 'pry-syntax-hacks'
+  gem 'pry-highlight'
+  gem 'pry-editline'
+  gem 'pry-git'
+  gem 'pry-developer_tools'
+  gem 'awesome_print'
+  # End of 'pry-full' foolishness.
+  gem 'pry-byebug'
   gem 'pry-rails'
   gem 'pry-rescue'
   gem 'rails-footnotes'

@@ -1,18 +1,34 @@
 
+require_relative 'base'
+
 module CCO
-  # CCO for Users. Does not (presently) subclass Base.
-  class UserCCO
-    def self.to_entity(impl, current_session = nil)
-      wanted_attrs = impl.attributes.delete_if { |k, _v| k.match(/_at/) }
-      wanted_attrs[:session_token] = _validate_session(current_session)
-      User.new FancyOpenStruct.new(wanted_attrs)
+  # CCO for Users.
+  class UserCCO < Base
+    def self.attr_names
+      [:name, :email, :profile, :slug]
     end
 
-    def self.from_entity(entity)
-      impl = UserData.new
-      attrs = [:name, :email, :profile, :slug]
-      attrs.each { |attr_name| impl[attr_name] = entity.send(attr_name) }
-      impl
+    def self.entity
+      User
+    end
+
+    def self.model
+      UserData
+    end
+
+    def self.entity_instance_based_on(attrs)
+      entity.new attrs
+    end
+
+    def self.model_instance_based_on(entity)
+      model.find_or_initialize_by slug: entity.slug
+    end
+
+    def self.to_entity(impl, params = {})
+      current_session = params.fetch :current_session, nil
+      ret = super
+      ret.session_token = current_session if _validate_session(current_session)
+      ret
     end
 
     def self._validate_session(current_session)
