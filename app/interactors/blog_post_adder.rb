@@ -8,10 +8,19 @@ module DSO
     model :post, class: parent.parent::Post
 
     def execute
-      post.publish
+      post.public_send post_method_message
     end
 
     private
+
+    def post_method_message
+      return :publish if should_publish?
+      :add_to_blog
+    end
+
+    def should_publish?
+      post.pubdate.present?
+    end
 
     def validate_post
       return true if post.valid?
