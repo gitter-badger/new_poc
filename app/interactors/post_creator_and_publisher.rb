@@ -18,9 +18,9 @@ module DSO
     end
 
     def execute
-      post = PermissivePostCreator.run! create_params
-      BlogPostAdder.run!(post: post) if post.valid?
-      post
+      PermissivePostCreator.run!(create_params).tap do |post|
+        BlogPostAdder.run!(post: post) if post.valid?
+      end
     end
 
     private
