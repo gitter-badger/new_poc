@@ -12,7 +12,7 @@ require "sprockets/railtie"
 I18n.enforce_available_locales = false
 
 # Require 'eventmachine' separately in an attempt to fix an issue w/Ruby 2.2.0.
-require 'em/pure_ruby' if RUBY_VERSION >= '2.2.0'
+require 'em/pure_ruby' # if RUBY_VERSION >= '2.2.0'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.

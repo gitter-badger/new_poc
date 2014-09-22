@@ -2,55 +2,10 @@
 source 'https://rubygems.org'
 source 'https://rails-assets.org'
 
-###########################################################
-#### Github repo/commit specs for Gems of interest
-###########################################################
-
 # EM 1.0.3 breaks with Ruby > 2.1.2; see their Issue 509.
-gem 'eventmachine', github: 'eventmachine/eventmachine'
-# 14 of 22 commits occurred after last tagged release. Pffft.
-gem 'markdown-toolbar', github: 'fuksito/markdown-toolbar'
-# Important commits since 1.0.0; no new tagged release since 2014/01/26.
-gem 'naught', github: 'avdi/naught'
-# 95/107 commits since 0.1.2 on 2010/11/06. Low activity :-P
-gem 'slim-rails', github: 'slim-template/slim-rails'
-# 5 commits since 1.2.1 (2014/06/06), including RSpec 3 compatibility
-gem 'yajl-ruby', github: 'brianmario/yajl-ruby'
+gem 'eventmachine', require: false, github: 'eventmachine/eventmachine'
 
-group :development do
-  gem 'annotate', github: 'ctran/annotate_models'
-  # gem 'better_errors' # replaced by 'web-console'
-  # tracking updates towards 2.0.0
-  gem 'web-console', github: 'rails/web-console'  # replaces 'better_errors'
-  gem 'metric_fu-Saikuro', github: 'metricfu/Saikuro'
-  # 78/170 commits since 0.0.24 on 2012/09/25; several important fixes
-  gem 'churn', github: 'danmayer/churn'
-  # Fixes for Ruby 2.0 compatibility, inter alia
-  gem 'reek', github: 'troessner/reek'
-end
-
-group :development, :test do
-  # Important issue fixes since 0.10.2 tagged on 2013/09/09
-  gem 'chronic', github: 'mojombo/chronic'
-  # Fixes to breaking bugs in our usage.
-  gem 'database_cleaner', github: 'DatabaseCleaner/database_cleaner'
-  # Fork doesn't have version dependency; *has* RSpec 3 'expect' syntax. Win!
-  gem 'rspec-html-matchers', github: 'seomoz/rspec-html-matchers'
-  # Original 'c42/rspec-http' is abandoned, pre-dates RSpec 2.14(!), now at 3.1.
-  # jdickey/rspec-http forked from shishir/rpec-http, which takes us to 2.99.0
-  # but needs work for RSpec 3.x.
-  gem 'rspec-http', github: 'jdickey/rspec-http', branch: 'rspec-3'
-  # *Shoddy* release engineering. AIWT, 300+ commits since 3.0.0beta2 on master.
-  gem 'rspec-rails', github: 'rspec/rspec-rails', branch: '3-1-maintenance'
-  # 55 commits since 0.8.0 (2014/04/19); important PRs merged, incl. RSpec 3
-  gem 'teaspoon', github: 'modeset/teaspoon'
-end
-
-############################################################
-#### Ordinary Gems
-###########################################################
-
-#gem 'active_attr'
+gem 'active_attr'
 gem 'active_interaction'
 gem 'bcrypt-ruby'
 gem 'bundler-reorganizer'
@@ -61,6 +16,8 @@ gem 'friendly_id' #, github: 'norman/friendly_id'
 gem 'htmlentities'
 gem 'jbuilder'
 gem 'jquery-rails'
+gem 'markdown-toolbar', github: 'fuksito/markdown-toolbar'
+gem 'naught', github: 'avdi/naught'
 gem 'pundit'
 gem 'rails', '4.1.6'
 # gem 'rails', '4.2.0.beta1'
@@ -72,18 +29,22 @@ gem 'redcarpet' # , github: 'vmg/redcarpet'
 gem 'rouge'
 # gem 'sass-rails', github: 'rails/sass-rails'
 gem 'sass-rails' # only for Rails < 4.2
+gem 'slim-rails', github: 'slim-template/slim-rails'
 gem 'sqlite3'
-gem 'thin', require: false if RUBY_VERSION >= '2.2.0'
-gem 'thin' if RUBY_VERSION < '2.2.0'
+gem 'thin'
 gem 'uglifier'
 gem 'validates_email_format_of'
 gem 'wisper'
+gem 'yajl-ruby', github: 'brianmario/yajl-ruby'
 
 group :doc do
   gem 'sdoc'
 end
 
 group :development do
+  gem 'annotate', github: 'ctran/annotate_models'
+  # gem 'better_errors' # replaced by 'web-console'
+  gem 'web-console', github: 'rails/web-console'  # replaces 'better_errors'
   gem 'binding_of_caller'
   gem 'bullet'
   gem 'meta_request'
@@ -94,6 +55,9 @@ group :development do
   # gem 'metric_fu', github: 'metricfu/metric_fu'
   gem 'flog' # , github: 'seattlerb/flog'
   gem 'flay' # , github: 'seattlerb/flay'
+  gem 'metric_fu-Saikuro', github: 'metricfu/Saikuro'
+  gem 'churn', github: 'danmayer/churn'
+  gem 'reek', github: 'troessner/reek'
   gem 'roodi'
   # gem 'code_statistics' # Statistics like it's 2009, apparently
   gem 'rails_best_practices'
@@ -121,11 +85,22 @@ end
 group :development, :test do
   gem 'capybara'
   gem 'capybara-webkit'
+  gem 'chronic', github: 'mojombo/chronic'
+  gem 'database_cleaner', github: 'DatabaseCleaner/database_cleaner'
   gem 'factory_girl_rails'
   gem 'quiet_assets'
   gem 'rspec'
   gem 'rspec-collection_matchers'
+  # Fork doesn't have version dependency; *has* RSpec 3 'expect' syntax. Win!
+  gem 'rspec-html-matchers', github: 'seomoz/rspec-html-matchers'
+  # Original 'c42/rspec-http' is abandoned, pre-dates RSpec 2.14(!), now at 3.1.
+  # jdickey/rspec-http forked from shishir/rpec-http, which takes us to 2.99.0
+  # but needs work for RSpec 3.x.
+  gem 'rspec-http', github: 'jdickey/rspec-http', branch: 'rspec-3'
+  # *Shoddy* release engineering. AIWT, 300+ commits since 3.0.0beta2 on master.
+  gem 'rspec-rails', github: 'rspec/rspec-rails', branch: '3-1-maintenance'
   gem 'ruby-growl'
   gem 'simplecov'
   gem 'tapout'
+  gem 'teaspoon', github: 'modeset/teaspoon'
 end
